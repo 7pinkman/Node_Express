@@ -1,5 +1,5 @@
 //creating a server using node js
-const http = require('http');
+//const http = require('http');
 
 
 /*
@@ -39,9 +39,9 @@ After executing the file,this essentially started the script where node js went 
 and so on,so it basically it reads our entire code and start executing it.we never left the previous program,as in Node there is  a important 
 concept named as event loop which is a loop process which managed by node js which keeps on running as long as there is work to do.
 */
-
-
 /*
+
+
 const server=http.createServer((req,res) => {
     console.log(req.url,req.method,req.headers);
     res.setHeader('Content-Type','text/html');
@@ -51,9 +51,10 @@ const server=http.createServer((req,res) => {
     res.write('</html>');
     res.end();
 });
-*/
-//server.listen(3000);
 
+server.listen(3000);
+
+*/
 //--------------------------------------------------------------------------------
 
 //assignment 7
@@ -133,7 +134,7 @@ server.listen(3000);
 //on it,now when we click that send button ,we send a post request to /message but we're not doing anything with that,let do something.
 //here we will redirect the user to '/' and create a new file and store the messgae the user entered in it.
 
-const fs=require('fs');//fs is a pkg to work with files
+//const fs=require('fs');//fs is a pkg to work with files
 
 /*
 const server=http.createServer((req,res) => {
@@ -157,7 +158,8 @@ const server=http.createServer((req,res) => {
         //we can do this in two steps like
         res.statusCode=302;
         res.setHeader('Location', '/')//it redirecting to '/',this is a default header accepted by the browser,we set the location to '/' and i will 
-        //autometically use the host we're already running on  
+        //autometically use the host we're already running on
+        //setHeader is also used for redirection purpose  
         return res.end();
 
     }
@@ -316,6 +318,7 @@ I want you to read all the messages from the file and show it at the top of the 
 Everytime you add a new message it should show at the top of the form.
 
 */
+/*
 
 const fs1=require('fs');
 
@@ -373,5 +376,13 @@ const server=http.createServer((req,res) => {
     }
     
 });
+
+server.listen(3000);
+*/
+const http = require('http');
+
+const routes = require('./route');//. is used to specify current directory
+
+const server=http.createServer(routes);
 
 server.listen(3000);
