@@ -29,7 +29,9 @@ const requestHandler = (req,res) => {
                 res.setHeader('Location', '/')
                 return res.end();//this responce will be sent when we are done working with this file because that is  ultimately the 
                 //action we want to do upon our request.
+
     
+                
             })//the callback function is executed when the file is done,so just as createServer(),node js create a event listener for us.
             //IN Node,we have this event driven architecture where we tell node to do something,then it will go ahead and offload that process
             //to the OS which does use multi threading and so on,and will then continue its event loop to listen for event callbacks and alwys
@@ -37,7 +39,6 @@ const requestHandler = (req,res) => {
     
             //thus node is high performent as it does not block the code or servers,it just tell os to do this or that  and eventually comes back and 
             //does something with the callback,like sending a response here which is not a blocking operation.
-    
         })
         //we need to return on function otherwise from line 294 code will be executed because of async characteristic of node
     

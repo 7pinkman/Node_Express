@@ -382,7 +382,125 @@ server.listen(3000);
 const http = require('http');
 
 const routes = require('./route');//. is used to specify current directory
+//in above statement the file content here is cached by node,we can't edit it externally.if we somehow would define route as a object and we tried 
+//to add new property to it,this is not manupulate the original file.so this is basically locked,not accessible from outside.we can only export
+//staff that we can now read from outside.
+//const server=http.createServer(routes);
 
-const server=http.createServer(routes);
+const server=http.createServer(routes.handler);
+console.log(routes.sometext);
 
 server.listen(3000);
+//"start": "node app.js",start is a special keyword,in cmd if we write npm start then whole application will run
+//"start-server":"node app.js",but if we wite npm start-server then it will  not do same thing like above. as it is  customization, 
+//we need to write npm run start-server,
+//to run 
+//react or angular script we need this customization to build the workflow.
+
+/*We install nodemon as a development depenedency locally and it added package-lock.json file in node_modules and in package.json file it add a new
+dependency
+"nodemon": "^2.0.22"--> this ^ symbol tell us how the package will be updated if we just run npm install ,i.e,without defining an extra package name
+because this command will go to all the package mention in package.json and simply install them with updated versions.  
+
+nodemon: It simply restarts the node application whenever it observes the changes in the file present in the working directory of your project.
+to execute nodemon we need this to update - 
+"start": "nodemon app.js", 
+
+
+As a side note
+
+if you were to run nodemon app.js down there in cmd , you would get an error that this command is not found
+
+because it's only installed in this project and not globally on your machine but the terminal will try
+
+to find this globally. Here npm start
+
+it will work because this will look locally.
+
+So if you now run npm start, this will simply start the node server and output some extra information
+
+NPM script will look for the local version of the package.
+to install nodemon globally - npm install nodemon -g
+to install nodemon locally-npm install nodemon --save-dev
+
+
+
+
+The package-lock json file by the way just stores the exact versions I installed today so that if you
+
+
+
+Global Features vs Core Modules vs Third-Party Modules
+The last lectures contained important concepts about available Node.js features and how to unlock them.
+
+You can basically differentiate between:
+
+Global features: Keywords like const or function but also some global objects like process
+
+Core Node.js Modules: Examples would be the file-system module ("fs"), the path module ("path") or the Http module ("http")
+
+Third-party Modules: Installed via npm install - you can add any kind of feature to your app via this way
+
+Global features are always available, you don't need to import them into the files where you want to use them.
+
+Core Node.js Modules don't need to be installed (NO npm install is required) but you need to import them when you want to use features exposed by them.
+
+Example:
+
+const fs = require('fs');
+
+You can now use the fs object exported by the "fs" module.
+
+Third-party Modules need to be installed (via npm install in the project folder) AND imported.
+
+Example (which you don't need to understand yet - we'll cover this later in the course):
+
+// In terminal/ command prompt
+npm install --save express-session
+// In code file (e.g. app.js)
+const sessions = require('express-session');
+
+
+As a side note
+
+if you were to run nodemon app.js down there, you would get an error that this command is not found
+
+because it's only installed in this project and not globally on your machine but the terminal will try
+
+to find this globally. Here
+
+it will work because this will look globally.
+
+So if you now run npm start, this will simply start the node server and output some extra information
+
+
+
+Global & Local npm Packages
+In the last lecture, we added nodemon as a local dependency to our project.
+
+The good thing about local dependencies is that you can share projects without the node_modules folder (where they are stored) and you can run npm install in a project to then re-create that node_modules folder. This allows you to share only your source code, hence reducing the size of the shared project vastly.
+
+The attached course code snippets also are shared in that way, hence you need to run npm install in the extracted packages to be able to run my code!
+
+I showed that nodemon app.js would not work in the terminal or command line because we don't use local dependencies there but global packages.
+
+You could install nodemon globally if you wanted (this is NOT required though - because we can just run it locally): npm install -g nodemon would do the trick. Specifically the -g flag ensures that the package gets added as a global package which you now can use anywhere on your machine, directly from inside the terminal or command prompt.
+
+
+ --save saves the name and version of the package being installed in the dependency object. --save-dev saves the name and version of the package being installed in the dev-dependency object.
+
+
+
+ To start the debugger autometically after any change in the code we need to use nodemon package.
+
+ Add configuration -> Node.js -> then .vscode and launch.json autometically created,there in the configurateion block we need to mention 
+ "restart": true,
+"runtimeExecutable": "nodemon",it tries to find nodemon globally so we need to install nodemon globally
+"console": "integratedTerminal"
+
+*/
+
+
+
+
+
