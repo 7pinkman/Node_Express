@@ -723,7 +723,7 @@ like the one we're getting here, sent through a form.
 */
 
 app.use('/add-product',(req,res,next) => {
-    res.send('<form action="/product" method="POST"><input type="text" name="title"><button type="submit">Add Product</button>');
+    res.send('<form action="/product" method="POST"><input type="text" name="title"><input type="text" name="size"><button type="submit">Add Product</button>');
 })
 
 app.use('/product',(req,res,next) => {
