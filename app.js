@@ -379,6 +379,7 @@ const server=http.createServer((req,res) => {
 
 server.listen(3000);
 */
+/*
 const http = require('http');
 
 const routes = require('./route');//. is used to specify current directory
@@ -391,6 +392,7 @@ const server=http.createServer(routes.handler);
 console.log(routes.sometext);
 
 server.listen(3000);
+*/
 //"start": "node app.js",start is a special keyword,in cmd if we write npm start then whole application will run
 //"start-server":"node app.js",but if we wite npm start-server then it will  not do same thing like above. as it is  customization, 
 //we need to write npm run start-server,
@@ -491,16 +493,278 @@ You could install nodemon globally if you wanted (this is NOT required though - 
 
 
 
- To start the debugger autometically after any change in the code we need to use nodemon package.
+ To start the debugger autometically after any change in the code, we need to use nodemon package to restart.
 
  Add configuration -> Node.js -> then .vscode and launch.json autometically created,there in the configurateion block we need to mention 
  "restart": true,
 "runtimeExecutable": "nodemon",it tries to find nodemon globally so we need to install nodemon globally
 "console": "integratedTerminal"
 
+it will restart the debugger when a change is detected,
+
+so that not just the server is restarted but also the debugging process. Here by the way in this configuration,
+
+you can also define that it should always start with the app.js file
+
+You can also change the console where things are logged to to the integrated terminal which is the normal
+
+terminal.
+------
+in the terminal, you get the normal output and you have to use the terminal because if you now change something,
+
+it restarts the debugger and node and these are two separate processes
+
+and if you stop the debugger, nodemon has to quit separately or has to exit separately and you do
+
+this by hitting control
+
+c here and this couldn't be done in the debug console which is why you have to funnel this to the
+
+terminal.
+
 */
 
+//--------------------------EXPRESS JS---------------------
+/*
+const http = require('http');
+
+const express=require('express');
+
+const app=express();//the express package seems to export a function express at the end,we can check it in express package
+
+/*express js is all about middleware,Middleware means an incoming request is autometically funeled through a bunch of functions by expressjs,
+
+so instead of just having one request handler, you will actually have a possibility of hooking in multiple
+
+functions which the request will go through until you send a response
+
+*//*
+app.use((req,res,next) => {
+    console.log('in the middleware');
+    next();
+});//use help us to add new middleware function,it accepts an array of so-called request handlers here and it has some other use cases too.
+
+/*Now one easy way of using it is that you simply pass a function to it and this function here, this function
+
+you pass to app use will be executed for every incoming request and this function will receive three arguments,
+
+the request and the response object
+
+as you already know it basically with some extra tricks learned though and a third argument which is
+
+the next argument.
+
+Next is actually a function, a function that will be passed to this function by expressjs
+
+this next argument, basically this function you're receiving here has to be executed to allow the
+
+request to travel on to the next middleware.
+
+///we have to call next here to allow the request to travel on to the next
+
+   // middleware in line.
+
+if we don't call
+
+next it just dies,
+
+so if we don't call next, we should actually send back a response because otherwise the request can't
+
+continue its journey,
+*/
+/*
+app.use((req,res,next) => {
+    console.log('in another middleware');
+    res.send('<h1>Hello from Expressjs</h1>');
+});
+/*
+Expressjs
+
+doesn't send a default response or anything like that,
+
+Send allows us to send well
+
+a response
+
+and actually this allows us to attach a body which is of type any,We could send good old html code here,
+
+you'll notice is that if you open your network tab here and you inspect that request
+
+you got,
+
+you will see that under headers, the content type is automatically set to text html here.
+The send method by default here
+
+since we send some text here simply sets an html content type,
+
+you can still set one manually with set header of course, so you can always override this expressjs
+
+default but you can also rely on the default where the default response header is text html.
+
+
+*/
+
+/*
+const server=http.createServer(app);//the app here happens to be a valid request handler,it sets up a certain way of handling incoming requests 
+
+server.listen(3000);
+*/
+//above both thye statement can be marged as below
+/*
+app.listen(3000);//as in listen function createServer() method is called,so we don't required http package as well.
+
+*/
+/////////////////////////////////ROUTING/////////////////////////////////////////////////////////////////////////////////
+/*
+const express=require('express');
+
+const app=express();
+
+//we can check use() in expressjs page
+/*
+app.use('/',(req,res,next) => {
+    console.log('in the middleware');
+    res.send('<h1>Hello from Expressjs</h1>');
+});
+/*
+in use as a path '/' is by default here.
+for example enter /add-product after the domain name in browser.
+
+We still see hello from express but I'm in another middleware, so this middleware gets
+
+executed for both slash and add product because this does not mean that the full path,
+
+so the part after the domain has to be a slash but that it has to start with that.
+
+Now of course every route starts with just a slash
+ 
+and then we have different other criteria.
+
+So what we can do is we can simply duplicate this and add it before this middleware and add
+
+/add-product.
+*/
+/*
+app.use('/add-product',(req,res,next) => {
+    console.log('in the middleware');
+    res.send('<h1>The "add-product" page</h1>');
+});
+
+app.use('/',(req,res,next) => {
+    console.log('in the middleware');
+    res.send('<h1>Hello from Expressjs</h1>');
+});
+
+
+/*
+
+Now why before this middleware and not after it?
+
+Because remember, the request goes through the file
+
+from top to bottom and if we don't call next, it's not going to the next middleware.
+
+Well I am not calling next here,
+
+so in the end if we have /add-product, this middleware will be reached first
+
+because top to bottom, add product will match this middleware
+
+and since I don't call next, this middleware will never get a chance of handling that request even though
+
+the filter here would have well, matched that request too.
+
+
+if you are sending a response, this is a good indication that you never want to call next too because
+
+you don't want to execute any other response related code just as before with vanilla nodejs,
+
+
+you don't want to send more than one response, this won't work and will result in an error.
+ if we have a middleware that should be applied to all requests, we would simply add it on top of
+
+all the other middlewares
+*/
+/*
+
+app.listen(3000);
+
+*/
+
+///////////////////////PARSING INCOMING REQUESTS
+
+const express=require('express');
+
+const app=express();
+
+const bodyParser=require('body-parser');
+
+app.use(bodyParser.urlencoded({extended:false}));/*you should pass the config options here and set
+
+extended to false,
+
+this is if it should be able to parse non-default features you could say
+/*
+it registers a middleware,
+
+so this function in the end just yields us such a middleware function,(like below functions which passed as argument in use())
+
+so this passes such a function here in the end even though we can't see it and this package will in the
+
+end, in this middleware function call next in the end, so that the request also reaches our middleware
+
+but before it does that, it will do that whole request body parsing we had to do manually in the previous
+
+core sections.
+
+Now this will not parse all kinds of possible bodies, files, json and so on but this will parse bodies
+
+like the one we're getting here, sent through a form. 
+*/
+
+app.use('/add-product',(req,res,next) => {
+    res.send('<form action="/product" method="POST"><input type="text" name="title"><button type="submit">Add Product</button>');
+})
+
+app.use('/product',(req,res,next) => {
+    console.log(req.body);
+/* before using body parser above statemnet return  undefined 
+
+request gives us this body convenience property here but by default, request doesn't try to parse the
+
+incoming request body. To do that,
+
+we need to register a parser and we do that by adding another middleware.
+
+and you typically do that before your route handling middlewares because the parsing of the body should
+
+be done no matter where your request ends up
+
+and there, I want to parse the incoming request body. Now for that we can install a third party package
+
+and we do that by running npm install --save body-parser
+
+After using body parser
+we get, a javascript object like title: 'book' with a key value pair which also makes extracting easy
+
+*/
+    res.redirect('/');
+/*I can use response redirect which certainly is easier than manually setting the status code and setting
+
+the location header. So redirect is another convenience function added by express
+
+and here I can redirect to let's say just slash,
+
+so it will automatically redirect me to the slash route.
+*/
+})
 
 
 
+app.use('/',(req,res,next) => {
+    console.log('in the middleware');
+    res.send('<h1>Hello from Expressjs</h1>');
+});
+//similar to use we can use get,post and put method.
+app.listen(3000);
 
