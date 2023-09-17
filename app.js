@@ -692,7 +692,7 @@ app.listen(3000);
 */
 
 ///////////////////////PARSING INCOMING REQUESTS
-
+/*
 const express=require('express');
 
 const app=express();
@@ -721,7 +721,7 @@ Now this will not parse all kinds of possible bodies, files, json and so on but 
 
 like the one we're getting here, sent through a form. 
 */
-
+/*
 app.use('/add-product',(req,res,next) => {
     res.send('<form action="/product" method="POST"><input type="text" name="title"><input type="text" name="size"><button type="submit">Add Product</button>');
 })
@@ -748,7 +748,7 @@ After using body parser
 we get, a javascript object like title: 'book' with a key value pair which also makes extracting easy
 
 */
-    res.redirect('/');
+//    res.redirect('/');
 /*I can use response redirect which certainly is easier than manually setting the status code and setting
 
 the location header. So redirect is another convenience function added by express
@@ -757,10 +757,10 @@ and here I can redirect to let's say just slash,
 
 so it will automatically redirect me to the slash route.
 */
-})
+//})
 
 
-
+/*
 app.use('/',(req,res,next) => {
     console.log('in the middleware');
     res.send('<h1>Hello from Expressjs</h1>');
@@ -768,4 +768,63 @@ app.use('/',(req,res,next) => {
 //similar to use we can use get,post and put method.
 app.listen(3000);
 //
+
+////////////////////////////////////*limiting middileware execution for post content
+
+*/
+/*
+const express=require('express');
+
+const app=express();
+
+const bodyParser=require('body-parser');
+
+app.use(bodyParser.urlencoded({extended:false}));
+
+app.use('/add-product',(req,res,next) => {
+    res.send('<form action="/product" method="POST"><input type="text" name="title"><input type="text" name="size"><button type="submit">Add Product</button>');
+})
+
+app.post('/product',(req,res,next) => {
+    console.log(req.body);
+    res.redirect('/');
+})
+
+app.use('/',(req,res,next) => {
+    console.log('in the middleware');
+    res.send('<h1>Hello from Expressjs</h1>');
+});
+
+app.listen(3000);
+*/
+
+///////////////////////////////Using expression router
+
+const express=require('express');
+
+const app=express();
+
+const bodyParser=require('body-parser');
+
+app.use(bodyParser.urlencoded({extended:false}));
+
+const adminRoutes = require('./routes/admin.js');
+const shopRoutes = require('./routes/shop.js');
+
+
+//app.use(adminRoutes);
+//app.use(shopRoutes);//order matter here of using objects
+//get ,post will do exact match not use
+
+
+
+///////////filter path will use common starting segment for our path which all routes in a given file use to outsource that in app.js file
+app.use('/admin',adminRoutes);
+app.use(shopRoutes);
+
+app.use((req, res, next) => {
+    res.status(404).send('<h1>Page not working </h1>');
+});
+
+app.listen(3000);
 
