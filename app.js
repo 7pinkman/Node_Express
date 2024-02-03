@@ -532,7 +532,8 @@ const express=require('express');
 
 const app=express();//the express package seems to export a function express at the end,we can check it in express package
 
-/*express js is all about middleware,Middleware means an incoming request is autometically funeled through a bunch of functions by expressjs,
+/*express js is all about middleware,Middleware means an incoming request is autometically funeled through a bunch of 
+functions by expressjs,
 
 so instead of just having one request handler, you will actually have a possibility of hooking in multiple
 
@@ -542,7 +543,8 @@ functions which the request will go through until you send a response
 app.use((req,res,next) => {
     console.log('in the middleware');
     next();
-});//use help us to add new middleware function,it accepts an array of so-called request handlers here and it has some other use cases too.
+});//use help us to add new middleware function,it accepts an array of so-called request handlers here and it has some 
+other use cases too.
 
 /*Now one easy way of using it is that you simply pass a function to it and this function here, this function
 
@@ -605,7 +607,8 @@ default but you can also rely on the default where the default response header i
 */
 
 /*
-const server=http.createServer(app);//the app here happens to be a valid request handler,it sets up a certain way of handling incoming requests 
+const server=http.createServer(app);//the app here happens to be a valid request handler,it sets up a certain way of handling
+ incoming requests 
 
 server.listen(3000);
 */
@@ -709,6 +712,7 @@ it registers a middleware,
 
 so this function in the end just yields us such a middleware function,(like below functions which passed as argument in use())
 
+
 so this passes such a function here in the end even though we can't see it and this package will in the
 
 end, in this middleware function call next in the end, so that the request also reaches our middleware
@@ -775,6 +779,7 @@ app.listen(3000);
 /*
 const express=require('express');
 
+//
 const app=express();
 
 const bodyParser=require('body-parser');
